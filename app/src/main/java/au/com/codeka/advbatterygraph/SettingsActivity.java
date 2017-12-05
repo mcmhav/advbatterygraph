@@ -46,14 +46,11 @@ public class SettingsActivity extends PreferenceActivity
 
     PreferenceManager.getDefaultSharedPreferences(this)
         .registerOnSharedPreferenceChangeListener(this);
-    WatchConnection.i.setup(this, watchConnectedRunnable);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    WatchConnection.i.start();
-    WatchConnection.i.sendMessage(new WatchConnection.Message("/advbatterygraph/Start", null));
   }
 
   @Override
@@ -71,16 +68,6 @@ public class SettingsActivity extends PreferenceActivity
       }
       header.fragmentArguments.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
           getIntent().getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID));
-    }
-
-    if (!WatchConnection.i.isConnected()) {
-      // if we're not connected to a watch, don't show the watch headings
-      for (PreferenceActivity.Header header : target) {
-        if (header.id == R.id.watch_settings_header) {
-          target.remove(header);
-          break;
-        }
-      }
     }
   }
 
