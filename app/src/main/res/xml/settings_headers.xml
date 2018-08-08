@@ -10,12 +10,6 @@
           android:title="Battery Graph"
           android:summary="Settings for monitoring your phones battery." />
 
-  <header android:id="@+id/watch_settings_header"
-          android:fragment="au.com.codeka.advbatterygraph.SettingsActivity$WatchSettingsFragment"
-          android:icon="@drawable/ic_watch"
-          android:title="Watch Graph"
-          android:summary="Settings for monitoring your watches battery." />
-
   <header android:fragment="au.com.codeka.advbatterygraph.SettingsActivity$TempSettingsFragment"
           android:icon="@drawable/ic_temp"
           android:title="Temperature Graph"

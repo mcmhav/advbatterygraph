@@ -77,15 +77,6 @@ public class SettingsActivity extends PreferenceActivity
     return true;
   }
 
-  private Runnable watchConnectedRunnable = new Runnable() {
-    @Override
-    public void run() {
-      // Just invalidate the headers, the onBuildHeaders logic will recreate the headers
-      // with the watch enabled again.
-      invalidateHeaders();
-    }
-  };
-
   /**
    * When preferences change, notify the graph to update itself.
    */
@@ -204,18 +195,6 @@ public class SettingsActivity extends PreferenceActivity
 
       ListPreference listpref = (ListPreference) findPreference(getPrefix() + "NumHours");
       listpref.setSummary(listpref.getEntry());
-    }
-  }
-
-  public static class WatchSettingsFragment extends BasePreferenceFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      addPreferencesFromResource(R.xml.watch_settings);
-    }
-
-    @Override
-    protected void refreshSummaries() {
     }
   }
 

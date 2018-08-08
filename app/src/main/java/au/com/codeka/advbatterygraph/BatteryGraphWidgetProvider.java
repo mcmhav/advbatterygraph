@@ -90,7 +90,8 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
       if (appWidgetIds != null) {
         for (int appWidgetId : appWidgetIds) {
           AppWidgetManager.getInstance(context).updateAppWidget(
-              appWidgetId, mRemoteViews.get(appWidgetId));
+              appWidgetId, mRemoteViews.get(appWidgetId)
+          );
         }
       }
     } catch (Exception e) {
@@ -141,9 +142,16 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
       Intent intent = new Intent(context, SettingsActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
       intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-      PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
-          PendingIntent.FLAG_CANCEL_CURRENT);
-      mRemoteViews.get(appWidgetId).setOnClickPendingIntent(R.id.image, pendingIntent);
+      PendingIntent pendingIntent = PendingIntent.getActivity(
+        context,
+        appWidgetId,
+        intent,
+        PendingIntent.FLAG_CANCEL_CURRENT
+      );
+
+      mRemoteViews
+        .get(appWidgetId)
+        .setOnClickPendingIntent(R.id.image, pendingIntent);
 
       Settings.GraphSettings graphSettings = mSettings.getGraphSettings(appWidgetId);
       int numMinutes = graphSettings.getNumHours() * 60;
@@ -152,8 +160,7 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     }
   }
 
-  private Bitmap renderGraph(Context context, Settings.GraphSettings graphSettings,
-      int numMinutes) {
+  private Bitmap renderGraph(Context context, Settings.GraphSettings graphSettings, int numMinutes) {
     final int width = (int) (graphSettings.getGraphWidth() * mPixelDensity);
     final int height = (int) (graphSettings.getGraphHeight() * mPixelDensity);
     if (width == 0 || height == 0) {
@@ -169,7 +176,10 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     }
 
     List<BatteryStatus> batteryHistory = BatteryStatus.getHistory(
-        context, 0, graphSettings.getNumHours());
+      context,
+      0,
+      graphSettings.getNumHours()
+    );
     List<BatteryStatus> watchHistory;
     if (graphSettings.showWatchGraph()) {
       watchHistory = BatteryStatus.getHistory(context, 1, graphSettings.getNumHours());
@@ -415,8 +425,7 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     }
   }
 
-  private List<GraphPoint> renderChargeGraph(List<BatteryStatus> history, int numMinutes,
-      int width, int height, int baseColour) {
+  private List<GraphPoint> renderChargeGraph(List<BatteryStatus> history, int numMinutes, int width, int height, int baseColour) {
     height -= 4;
     ArrayList<GraphPoint> points = new ArrayList<>();
     if (history.size() < 2) {
@@ -509,9 +518,7 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     return points;
   }
 
-  private float getSmoothedValue(List<BatteryStatus> history, int position,
-      ArrayList<Integer> lastIndices, float pixelsPerMinute,
-      int smoothness, GraphCustomizer customizer) {
+  private float getSmoothedValue(List<BatteryStatus> history, int position, ArrayList<Integer> lastIndices, float pixelsPerMinute, int smoothness, GraphCustomizer customizer) {
     float value = customizer.getValue(history.get(position));
     if (smoothness > 0) {
       int numValues = 1;
@@ -640,8 +647,7 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     return (temp - min) / range;
   }
 
-  private void drawGraphBackground(
-      List<GraphPoint> points, Canvas canvas, int width, int zeroValue) {
+  private void drawGraphBackground(List<GraphPoint> points, Canvas canvas, int width, int zeroValue) {
     Path path = new Path();
     path.moveTo(width, zeroValue);
     for (GraphPoint pt : points) {
@@ -651,7 +657,7 @@ public class BatteryGraphWidgetProvider extends AppWidgetProvider {
     path.lineTo(width, zeroValue);
     Paint paint = new Paint();
     paint.setAntiAlias(true);
-    paint.setARGB(128, 0, 0, 0);
+    paint.setARGB(128, 255, 0, 0);
     paint.setStyle(Style.FILL);
     canvas.drawPath(path, paint);
   }
